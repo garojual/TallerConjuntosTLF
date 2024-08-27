@@ -39,3 +39,11 @@ class OperacionesConjuntos:
                     resultado.remove(elemento)
                     historial.append(elemento)
         return resultado
+
+
+    def es_subconjunto(super, sub):
+        for elemento in sub:
+            if elemento not in super:
+                return False
+
+        return True
