@@ -1,4 +1,3 @@
-
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2, venn3
 
@@ -14,14 +13,49 @@ def union_conjuntos(*conjuntos):
 
 #Funcion para calcular la interseccion entre multiples conjuntos
 def interseccion(*conjuntos):
+    resultado = []
+    
     if len(conjuntos) == 0:
-        return []
-    resultado = conjuntos[0]
+        return resultado
+    elif len(conjuntos) == 2:
+        resultado = interseccion2(conjuntos[0], conjuntos[1])
+        print("La interseccion es " + str(resultado))
+        graficar_conjuntos_2(conjuntos[0], conjuntos[1], "A", "B")
+    elif len(conjuntos) == 3:
+        resultado = interseccion3(conjuntos[0], conjuntos[1], conjuntos[2])
+        print(resultado)
+        graficar_conjuntos_3(conjuntos[0], conjuntos[1], conjuntos[2], "A", "B", "C")
+    else:
+        print("hola")
 
-    for conjunto in conjuntos[1:]:
-        for elemento in resultado:
-            if not elemento in conjunto:
-                resultado.remove(elemento)
+
+def interseccion2(a, b):
+    
+    resultado = a.copy()
+    for elemento in a:
+        if not elemento in b:
+            resultado.remove(elemento)
+    return resultado
+
+
+def interseccion3(a, b, c):
+    a_b = interseccion2(a, b)
+    a_c = interseccion2(a, c)
+    b_c = interseccion2(b, c)
+    a_b_c = interseccion2(a, b_c)
+
+    for elemento in a_b_c:
+        if elemento in a_b:
+            a_b.remove(elemento)
+        if elemento in a_c:
+            a_c.remove(elemento)
+        if elemento in b_c:
+            b_c.remove(elemento)
+
+    resultado = "La intersección general es: " + str(a_b_c) + "\n" + """La intersección entre 
+    solo A y B es: """ + str(a_b) + "\n" + """La intersección entre solo A y C es: """ + str(a_c) + """\n
+    La intersección entre solo B y C es: """ + str(b_c) 
+
     return resultado
 
 #Funcion para calcular la diferencia entre varios conjuntos
@@ -113,6 +147,7 @@ def main():
     b = [3,4,5,6,7]
     c = [2,3,8,9]
     #graficar_conjuntos_2(a,b, "A", "B")
-    graficar_conjuntos_3(a,b,c, "A", "B", "C")
+    #graficar_conjuntos_3(a,b,c, "A", "B", "C")
+    interseccion(a, b, c)
 
 main()
